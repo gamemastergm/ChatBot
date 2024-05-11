@@ -17,6 +17,7 @@ import lombok.Setter;
 public class Question {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     private ArrayList<String> questions;
     private String answer;
 }

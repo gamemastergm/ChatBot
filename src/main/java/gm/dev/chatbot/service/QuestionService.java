@@ -6,6 +6,8 @@ import org.springframework.stereotype.Service;
 import gm.dev.chatbot.model.Question;
 import gm.dev.chatbot.repository.QuestionRepository;
 
+import java.util.List;
+
 @Service
 public class QuestionService {
     
@@ -13,7 +15,7 @@ public class QuestionService {
     private QuestionRepository qr;
 
 
-    public Iterable<Question> list(){
+    public List<Question> list(){
         return qr.findAll();
     }
 }

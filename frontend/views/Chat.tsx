@@ -11,7 +11,6 @@ import { Socket } from 'socket.io-client';
 
 export default function MainView() {
     const [name, setName] = useState("");
-    const [contagem, setContagem] = useState(false);
     const [isConnected, setIsConnected] = useState(false);
     const [messages, setMessages] = useState<string[]>([]);
     const [inputValue, setInputValue] = useState<string>('');

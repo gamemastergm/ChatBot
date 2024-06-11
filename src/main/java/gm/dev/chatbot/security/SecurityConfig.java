@@ -20,13 +20,14 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests(auth -> auth
                 .requestMatchers("/signin", "/signup").permitAll()
-                .requestMatchers("/users/**", "/apps/**").hasAuthority("ADMIN")
+                .requestMatchers("/chat/**", "/home/**").hasAuthority("ADMIN")
                 .requestMatchers("/myapps/**").hasAuthority("CLIENT")
                 .anyRequest().authenticated()
             )
             .formLogin(formLogin -> formLogin
                 .loginPage("/login")
                 .permitAll()
+                .defaultSuccessUrl("/", true)
             )
             .logout(logout -> logout.permitAll());
 

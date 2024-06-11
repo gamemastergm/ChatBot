@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
   <head>
-    <title>Login</title>
+    <title>Registre-se</title>
 
     <link
       href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
@@ -16,7 +16,7 @@
         height: 100vh;
         background-color: #f8f9fa;
       }
-      .login-container {
+      .register-container {
         max-width: 400px;
         padding: 15px;
         background: white;
@@ -26,9 +26,9 @@
     </style>
   </head>
   <body>
-    <div class="login-container">
-      <h1 class="h3 mb-3 font-weight-normal text-center">Login</h1>
-      <form th:action="@{/login}" method="post">
+    <div class="register-container">
+      <h1 class="h3 mb-3 font-weight-normal text-center">Registre-se</h1>
+      <form th:action="@{/register}" method="post">
         <div class="form-group">
           <label for="username">Username</label>
           <input
@@ -52,16 +52,20 @@
             required
           />
         </div>
+        <div class="form-group">
+          <label for="passwordConfirm">Confirm Password</label>
+          <input
+            type="password"
+            id="passwordConfirm"
+            name="passwordConfirm"
+            class="form-control"
+            placeholder="Confirm password"
+            required
+          />
+        </div>
         <button class="btn btn-lg btn-primary btn-block" type="submit">
-          Login
+          Registre-se
         </button>
-
-        <div th:if="${param.error}" class="alert alert-danger mt-3">
-          Usuário ou senha incorreta. Tente novamente.
-        </div>
-        <div class="text-center mt-3">
-          <a th:href="@{/register}" class="btn btn-secondary">Registre-se</a>
-        </div>
       </form>
     </div>
 

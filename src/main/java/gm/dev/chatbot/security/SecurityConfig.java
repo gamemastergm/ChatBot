@@ -6,7 +6,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
@@ -19,7 +18,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests(auth -> auth
-                .requestMatchers("/signin", "/signup").permitAll()
+                .requestMatchers("/signin", "/signup", "/register").permitAll()
                 .requestMatchers("/chat/**", "/home/**").hasAuthority("ADMIN")
                 .requestMatchers("/myapps/**").hasAuthority("CLIENT")
                 .anyRequest().authenticated()
@@ -28,14 +27,15 @@ public class SecurityConfig {
                 .loginPage("/login")
                 .permitAll()
                 .defaultSuccessUrl("/", true)
+                .failureUrl("/login?error=true")
             )
             .logout(logout -> logout.permitAll());
 
         return http.build();
     }
 
-     @Bean
-    public UserDetailsService userDetailsService(PasswordEncoder passwordEncoder) {
+    @Bean
+    public InMemoryUserDetailsManager userDetailsService(PasswordEncoder passwordEncoder) {
         User.UserBuilder users = User.builder().passwordEncoder(passwordEncoder::encode);
         UserDetails user = users
             .username("user")
@@ -45,8 +45,6 @@ public class SecurityConfig {
 
         return new InMemoryUserDetailsManager(user);
     }
-
-    
 
     @Bean
     public PasswordEncoder passwordEncoder() {

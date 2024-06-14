@@ -1,15 +1,21 @@
-import MainView from "Frontend/views/MainView";
-import Login from "Frontend/views/Login";
-import Chat from "Frontend/views/Chat";
-import {
-    createBrowserRouter,
-    RouteObject
-} from "react-router-dom";
+import React from 'react';
+import { createBrowserRouter, RouteObject } from 'react-router-dom';
+import Login from 'Frontend/views/Login';
+import Register from 'Frontend/views/Register';
+import Chat from 'Frontend/views/Chat';
+import PrivateRoute from 'Frontend/PrivateRoute'; // Importe o componente PrivateRoute
 
-export const routes: readonly RouteObject[] = [
-    { path: "/", element: <Chat /> },//Home
+const routes: RouteObject[] = [
+    { path: "/", element: <Login /> }, // Home
     { path: "/login", element: <Login /> },
-    { path: "/chat", element: <Chat /> },
+    { path: "/register", element: <Register /> },
+    {
+        path: "/",
+        element: <PrivateRoute />, // Rota protegida
+        children: [
+            { path: "/chat", element: <Chat /> },
+        ],
+    },
 ];
 
-export const router = createBrowserRouter([...routes], {basename: new URL(document.baseURI).pathname });
+export const router = createBrowserRouter(routes, { basename: new URL(document.baseURI).pathname });

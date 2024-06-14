@@ -6,34 +6,37 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate } from 'react-router-dom';
 
-export default function Login() {
+export default function Register() {
     const [username, setUsername] = useState<string>('');
     const [password, setPassword] = useState<string>('');
+    const [passwordConfirm, setPasswordConfirm] = useState<string>('');
     const [error, setError] = useState<string | null>(null);
     const navigate = useNavigate();
 
-    const handleLogin = async (event: FormEvent<HTMLFormElement>) => {
+    const handleRegister = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
 
+        if (password !== passwordConfirm) {
+            setError('As senhas não correspondem');
+            return;
+        }
+
         try {
-            const response = await UserEndpoint.getAuthenticatedUser(username, password);
+            const response = await UserEndpoint.saveUser(username, password);
             console.log(response);
 
-            if (response?.statusCodeValue === 200) { // Status 200 OK
-                sessionStorage.setItem('username', username);
-                toast.success('Login bem-sucedido');
-                navigate('/chat'); // Redireciona para a página de chat
-            } else if (response?.statusCodeValue === 401) { // Status 401 UNAUTHORIZED
-                toast.error('Usuário ou senha incorretos');
-                setError('Usuário ou senha incorretos');
+            if (response && response.statusCodeValue === 201) { // Status 201 Created
+                toast.success('Usuário registrado com sucesso');
+                navigate('/login'); // Redireciona para a página de login
             } else {
-                throw new Error('Erro ao autenticar usuário');
+                toast.error(`Erro ao registrar usuário: ${response?.statusCode}`);
+                setError(`Erro ao registrar usuário: ${response?.statusCode}`);
             }
         } catch (error: unknown) {
             if (error instanceof Error) {
-                setError('Falha na autenticação. Por favor, tente novamente.');
+                setError(error.message);
             } else {
-                setError('Erro desconhecido ao autenticar usuário');
+                setError('Erro desconhecido ao registrar usuário');
             }
         }
     };
@@ -46,8 +49,8 @@ export default function Login() {
                         <div className="col-12 col-sm-10 col-md-8 col-lg-6 col-xl-5 col-xxl-4">
                             <div className="card bg-dark text-white border-0 rounded-3 shadow-sm">
                                 <div className="card-body p-3 p-md-4 p-xl-5">
-                                    <h2 className="fs-6 fw-normal text-center mb-4">LOGIN</h2>
-                                    <form onSubmit={handleLogin}>
+                                    <h2 className="fs-6 fw-normal text-center mb-4">REGISTRE-SE</h2>
+                                    <form onSubmit={handleRegister}>
                                         <div className="row gy-2 overflow-hidden">
                                             <div className="col-12">
                                                 <div className="form-floating mb-3">
@@ -80,8 +83,23 @@ export default function Login() {
                                                 </div>
                                             </div>
                                             <div className="col-12">
+                                                <div className="form-floating mb-3">
+                                                    <input
+                                                        type="password"
+                                                        className="form-control bg-dark text-white border-0"
+                                                        name="passwordConfirm"
+                                                        id="passwordConfirm"
+                                                        placeholder="Confirm Password"
+                                                        value={passwordConfirm}
+                                                        onChange={(e) => setPasswordConfirm(e.target.value)}
+                                                        required
+                                                    />
+                                                    <label htmlFor="passwordConfirm" className="form-label text-secondary">Confirm Password</label>
+                                                </div>
+                                            </div>
+                                            <div className="col-12">
                                                 <div className="d-grid my-3">
-                                                    <button className="btn btn-danger btn-lg" type="submit">Login</button>
+                                                    <button className="btn btn-danger btn-lg" type="submit">Registre-se</button>
                                                 </div>
                                             </div>
                                             {error && (
@@ -91,9 +109,6 @@ export default function Login() {
                                                     </div>
                                                 </div>
                                             )}
-                                            <div className="col-12 text-center mt-3">
-                                                <p className="m-0 text-secondary">Não tem uma conta? <a href="/register" className="link-danger text-decoration-none">Registre-se</a></p>
-                                            </div>
                                         </div>
                                     </form>
                                 </div>

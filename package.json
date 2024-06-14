@@ -3,6 +3,8 @@
   "license": "UNLICENSED",
   "type": "module",
   "dependencies": {
+    "@emotion/react": "^11.11.4",
+    "@emotion/styled": "^11.11.5",
     "@hilla/form": "2.5.5",
     "@hilla/frontend": "2.5.5",
     "@hilla/generator-typescript-cli": "2.5.5",
@@ -18,6 +20,8 @@
     "@hilla/react-components": "2.3.0",
     "@hilla/react-crud": "2.5.5",
     "@hilla/react-form": "2.5.5",
+    "@mui/icons-material": "^5.15.20",
+    "@mui/material": "^5.15.20",
     "@polymer/polymer": "3.5.1",
     "@vaadin/bundles": "24.3.0",
     "@vaadin/common-frontend": "0.0.19",
@@ -28,7 +32,8 @@
     "lit": "3.1.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-router-dom": "^6.4.2",
+    "react-router-dom": "^6.23.1",
+    "react-toastify": "^10.0.5",
     "socket.io": "^4.7.5",
     "socket.io-client": "^4.7.5",
     "ws": "^8.17.0"
@@ -84,7 +89,12 @@
     "ws": "$ws",
     "socket.io": "$socket.io",
     "socket.io-client": "$socket.io-client",
-    "bootstrap": "$bootstrap"
+    "bootstrap": "$bootstrap",
+    "react-toastify": "$react-toastify",
+    "@emotion/react": "$@emotion/react",
+    "@emotion/styled": "$@emotion/styled",
+    "@mui/icons-material": "$@mui/icons-material",
+    "@mui/material": "$@mui/material"
   },
   "vaadin": {
     "dependencies": {
@@ -128,6 +138,6 @@
       "workbox-core": "7.0.0",
       "workbox-precaching": "7.0.0"
     },
-    "hash": "74c92ed1e36338bfa6c45cde499bb75d9ca34193417c082a37669a14f551ecb1"
+    "hash": "7112f67b8ec0546d84d02e261efcb2b1d1ded5b37751baa7ca76d264d268a09a"
   }
 }

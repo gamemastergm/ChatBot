@@ -15,11 +15,12 @@ export default function Chat() {
     const [question, setQuestion] = useState<string | null>(null);
     const [countdown, setCountdown] = useState<number | null>(null);
     const [ranking, setRanking] = useState<[string, string][]>([]);
+    const [questionPosition, setQuestionPosition] = useState<string | null>(null);
 
     const messagesEndRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
-        const ngrokUrl = 'ws://0.tcp.sa.ngrok.io:12659'; // Substitua pelo URL fornecido pelo ngrok
+        const ngrokUrl = 'ws://0.tcp.sa.ngrok.io:16449'; // Substitua pelo URL fornecido pelo ngrok
         const newSocket = io(ngrokUrl);
 
         setSocket(newSocket);
@@ -43,18 +44,25 @@ export default function Chat() {
             });
         });
 
-        newSocket.on('ranking', (data: [string, string][]) => {
-            console.log('Ranking atualizado:', data);
-            setRanking(data);
+        newSocket.on('ranking', (ranking: [string, string][]) => {
+            setRanking(ranking);
         });
 
-        newSocket.on('question', (data: { pergunta: string, alternativas: string[] }) => {
+        newSocket.on('question', (data: { pergunta: string }) => {
             setMessages(prevMessages => [...prevMessages, ['BOT', data.pergunta]]);
             setQuestion(data.pergunta);
         });
 
+        newSocket.on('questionPosition', (position: string) => {
+            setQuestionPosition(position);
+        });
+
         newSocket.on('countdown', (count: number) => {
             setCountdown(count);
+        });
+
+        newSocket.on('privateMessage', ({ nome, message }: { nome: string; message: string }) => {
+            setMessages(prevMessages => [...prevMessages, [nome, message]]);
         });
 
         return () => {
@@ -215,6 +223,7 @@ export default function Chat() {
                         </div>
                         <div className="card-body">
                             <p style={{color:"white"}}><strong>Tempo restante:</strong> {countdown} segundos</p>
+                            {questionPosition && <p style={{color:"white"}}><strong>Pergunta:</strong> {questionPosition}</p>}
                         </div>
                     </div>
                 </div>
